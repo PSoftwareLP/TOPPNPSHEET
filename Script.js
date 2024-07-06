@@ -24,9 +24,9 @@ function doubleNumber() {
 
 function ComputeAttributeModifier(AttributeId) {
     // Get the input element
-    let input = document.getElementById(AttributeId + "Attribute");
+    let input = document.getElementById("Attribute" + AttributeId);
     // Get the output element
-    let output = document.getElementById(AttributeId+ "Modifier");
+    let output = document.getElementById("AttributeModifier" + AttributeId);
 
     // Parse input value as a number
     let number = parseFloat(input.value);

@@ -9,11 +9,8 @@
 <body>
     <script src="Script.js"></script>
     <div class="container">
-        <label for="StrengthAttribute">Enter a number:</label>
-        <input type="number" id="StrengthAttribute">
-        <button onclick="ComputeAttributeModifier('Strength')">AttributeBerechnen</button>
-        <br>
-        <label for="output">Result:</label>
+        <label for="StrengthAttribute">Placeholder:</label>
+        <label for="output">Placeholder auch</label>
         <input type="text" id="StrengthModifier" readonly>
     </div>
     <!--Character Information-->
@@ -23,7 +20,7 @@
             <!--Strength-->
             <div class="contentBox attribute">
                 <label>StrengthAttribute:</label>
-                <input type="number" id="AttributeStrength">
+                <input type="number" id="AttributeStrength" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Strength')">
                 <div class="separator"></div>
                 <label>StrengthModifier:</label>
                 <input type="text" id="AttributeModifierStrength" readonly>
@@ -31,7 +28,7 @@
             <!--Dexterity-->
             <div class="contentBox attribute">
                 <label>DexterityAttribute:</label>
-                <input type="number" id="AttributeDexterity">
+                <input type="number" id="AttributeDexterity" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Dexterity')">
                 <div class="separator"></div>
                 <label>DexterityModifier:</label>
                 <input type="text" id="AttributeModifierDexterity" readonly>
@@ -39,7 +36,7 @@
             <!--Constitution-->
             <div class="contentBox attribute">
                 <label>ConstitutionAttribute:</label>
-                <input type="number" id="AttributeConstitution">
+                <input type="number" id="AttributeConstitution" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Constitution')">
                 <div class="separator"></div>
                 <label>ConstitutionModifier:</label>
                 <input type="text" id="AttributeModifierConstitution" readonly>
@@ -47,7 +44,7 @@
             <!--Intelligence-->
             <div class="contentBox attribute">
                 <label>IntelligenceAttribute:</label>
-                <input type="number" id="AttributeIntelligence">
+                <input type="number" id="AttributeIntelligence" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Intelligence')">
                 <div class="separator"></div>
                 <label>IntelligenceModifier:</label>
                 <input type="text" id="AttributeModifierIntelligence" readonly>
@@ -55,7 +52,7 @@
             <!--Charisma-->
             <div class="contentBox attribute">
                 <label>CharismaAttribute:</label>
-                <input type="number" id="AttributeCharisma">
+                <input type="number" id="AttributeCharisma" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Charisma')">
                 <div class="separator"></div>
                 <label>CharismaModifier:</label>
                 <input type="text" id="AttributeModifierCharisma" readonly>
@@ -63,7 +60,7 @@
             <!--Willpower-->
             <div class="contentBox attribute">
                 <label>WillpowerAttribute:</label>
-                <input type="number" id="AttributeWillpower">
+                <input type="number" id="AttributeWillpower" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Willpower')">
                 <div class="separator"></div>
                 <label>WillpowerModifier:</label>
                 <input type="text" id="AttributeModifierWillpower" readonly>
@@ -71,7 +68,7 @@
             <!--Vitality-->
             <div class="contentBox attribute">
                 <label>VitalityAttribute:</label>
-                <input type="number" id="AttributeVitality">
+                <input type="number" id="AttributeVitality" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Vitality')">
                 <div class="separator"></div>
                 <label>VitalityModifier:</label>
                 <input type="text" id="AttributeModifierVitality" readonly>
