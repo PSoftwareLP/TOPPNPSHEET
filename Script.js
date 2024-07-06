@@ -22,11 +22,11 @@ function doubleNumber() {
     }
 }
 
-function ComputeStrengthModifier() {
+function ComputeAttributeModifier(AttributeId) {
     // Get the input element
-    let input = document.getElementById('StrengthAttribute');
+    let input = document.getElementById(AttributeId + "Attribute");
     // Get the output element
-    let output = document.getElementById('StrengthModifier');
+    let output = document.getElementById(AttributeId+ "Modifier");
 
     // Parse input value as a number
     let number = parseFloat(input.value);
