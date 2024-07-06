@@ -43,20 +43,48 @@ function ComputeAttributeModifier(AttributeId) {
 }
 
 function ComputeArmorClass(){
+    
     //Collect values of all fields that impact AC
-    
-    
+        
+        //T.B.D.
+    placeholderModifier = 2;
     //Do all characters have the same base value?
-    baseValue = 10;
+    baseValue = 12;
+
+    output = document.getElementById('ArmorClass');
+
+    output.value = baseValue + placeholderModifier;
 }
 
 function ComputeHealth(){
     //Get vitality
-    let input = document.getElementById('Vitality');
+    let inputVitality = document.getElementById('Vitality');
+    let vitality = parseFloat(inputVitality.value);
 
-    let vitality = parseFloat(input.value)
+    let inputModifier = document.getElementById('VitalityModifier');
+    let vitalityModifier = parseFloat(inputModifier.value);
 
     //do computation of health from vitality here
+
+    let output = document.getElementById(MaxHealth)
+
+    if (!isNaN(vitality) & !isNaN(vitalityModifier)) {
+
+        // Display the doubled number in the output field
+        output.value = 3*(vitality + vitalityModifier);
+    } else {
+        // If input is not a valid number, display an error or handle as needed
+        output.value = "Invalid input";
+    }
 }
 
 
+function ComputeInitiative(){
+    
+    let baseInitiative = 8;
+
+    let inputDexterity = document.getElementById('DexterityModifier')
+    let dexterityModifier = parseFloat(inputDexterity.value)
+
+    let initiativeModifier
+}

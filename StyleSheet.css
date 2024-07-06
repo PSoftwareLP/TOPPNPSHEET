@@ -44,17 +44,6 @@
     flex-direction: column;
     gap: 10px;
 }
-.verticalContainer {
-    width: 200px;
-    height: 600px;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 
 .contentBox {
     background: #e6e6e6;
@@ -62,12 +51,26 @@
     padding: 2px;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
 }
 
 .contentBox attribute{
-    border: 1px solid #ccc;
+
 }
 .contentBox abilitity {
 }
 .contentBox basicValue {
 }
+
+.value {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background: #e6e6e6;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+}
+
