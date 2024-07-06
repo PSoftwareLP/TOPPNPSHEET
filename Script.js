@@ -88,3 +88,16 @@ function ComputeInitiative(){
 
     let initiativeModifier
 }
+
+
+function ComputeMovement(){
+
+    let baseMovement = 10;
+
+    //Collect all fields that impact movement
+    let placeholderModifier = 0;
+
+    let output = document.getElementById('Movement')
+
+    output.value = baseMovement + placeholderModifier;
+}
