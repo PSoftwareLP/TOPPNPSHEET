@@ -15,20 +15,16 @@
 .rowContainer {
     flex-direction: row;
     display: flex;
-    border: 1px solid #ccc;
-    padding: 20px;
 }
 
 .columnContainer {
     flex-direction: column;
     display: flex;
-    border: 1px solid #ccc;
-    padding: 20px;
 }
 
 .horizontalContainer {
-    width: 400px;
-    height:200px;
+    width: 600px;
+    height:300px;
     background-color: #fff;
     padding: 20px;
     border: 1px solid #ccc;
@@ -39,7 +35,18 @@
 }
 .verticalContainer {
     width: 200px;
-    height: 400px;
+    height: 600px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.verticalContainer {
+    width: 200px;
+    height: 600px;
     background-color: #fff;
     padding: 20px;
     border: 1px solid #ccc;
@@ -47,4 +54,11 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+}
+
+.attributeContainer {
+}
+.abilitityContainer {
+}
+.basicValueContainer {
 }
