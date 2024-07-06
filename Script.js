@@ -41,3 +41,22 @@ function ComputeAttributeModifier(AttributeId) {
         output.value = "Invalid input";
     }
 }
+
+function ComputeArmorClass(){
+    //Collect values of all fields that impact AC
+    
+    
+    //Do all characters have the same base value?
+    baseValue = 10;
+}
+
+function ComputeHealth(){
+    //Get vitality
+    let input = document.getElementById('Vitality');
+
+    let vitality = parseFloat(input.value)
+
+    //do computation of health from vitality here
+}
+
+
