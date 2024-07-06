@@ -57,8 +57,9 @@
 .contentBox attribute{
 
 }
-.contentBox abilitity {
-}
+    .contentBox abilitity {
+        flex-direction: column;
+    }
 .contentBox basicValue {
 }
 
