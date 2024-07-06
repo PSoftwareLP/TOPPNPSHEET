@@ -1,0 +1,181 @@
+﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <title>Charakterbogen</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .container {
+                width: 800px;
+                background-color: #fff;
+                padding: 20px;
+                border: 1px solid #ccc;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-row {
+                display: flex;
+                justify-content: space-between;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+                .header-row div {
+                    flex: 1;
+                    text-align: center;
+                }
+
+            .attributes {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .attribute {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border: 2px solid #000;
+                border-radius: 10px;
+                background: #e6e6e6;
+            }
+
+                .attribute input {
+                    width: 70px;
+                    text-align: center;
+                    font-size: 16px;
+                    font-weight: bold;
+                    border: none;
+                    background: none;
+                }
+
+                .attribute .title {
+                    flex: 1;
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .attribute .separator {
+                    width: 2px;
+                    height: 30px;
+                    background-color: #000;
+                    margin: 0 10px;
+                }
+
+                .attribute .mod {
+                    font-weight: bold;
+                    width: 50px;
+                    text-align: center;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header-row">
+                <div>Attributspunkte</div>
+                <div>Boni</div>
+                <div>Modifikator</div>
+            </div>
+            <div class="attributes">
+                <div class="attribute">
+                    <input type="number" id="str" value="0" min="-200" max="200" onchange="calculateModifier('str')">
+                    <div class="separator"></div>
+                    <input type="number" id="str-bonus" value="0" min="-200" max="200" onchange="calculateModifier('str')">
+                    <div class="separator"></div>
+                    <input type="text" id="str-mod" readonly class="mod">
+                    <div class="title">Stärke</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="dex" value="0" min="-200" max="200" onchange="calculateModifier('dex')">
+                    <div class="separator"></div>
+                    <input type="number" id="dex-bonus" value="0" min="-200" max="200" onchange="calculateModifier('dex')">
+                    <div class="separator"></div>
+                    <input type="text" id="dex-mod" readonly class="mod">
+                    <div class="title">Geschicklichkeit</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="con" value="0" min="-200" max="200" onchange="calculateModifier('con')">
+                    <div class="separator"></div>
+                    <input type="number" id="con-bonus" value="0" min="-200" max="200" onchange="calculateModifier('con')">
+                    <div class="separator"></div>
+                    <input type="text" id="con-mod" readonly class="mod">
+                    <div class="title">Konstitution</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="vit" value="0" min="-200" max="200" onchange="calculateModifier('vit')">
+                    <div class="separator"></div>
+                    <input type
+                    <input type="number" id="vit-bonus" value="0" min="-200" max="200" onchange="calculateModifier('vit')">
+                    <div class="separator"></div>
+                    <input type="text" id="vit-mod" readonly class="mod">
+                    <div class="title">Vitalität</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="int" value="0" min="-200" max="200" onchange="calculateModifier('int')">
+                    <div class="separator"></div>
+                    <input type="number" id="int-bonus" value="0" min="-200" max="200" onchange="calculateModifier('int')">
+                    <div class="separator"></div>
+                    <input type="text" id="int-mod" readonly class="mod">
+                    <div class="title">Intelligenz</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="wis" value="0" min="-200" max="200" onchange="calculateModifier('wis')">
+                    <div class="separator"></div>
+                    <input type="number" id="wis-bonus" value="0" min="-200" max="200" onchange="calculateModifier('wis')">
+                    <div class="separator"></div>
+                    <input type="text" id="wis-mod" readonly class="mod">
+                    <div class="title">Weisheit</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="wil" value="0" min="-200" max="200" onchange="calculateModifier('wil')">
+                    <div class="separator"></div>
+                    <input type="number" id="wil-bonus" value="0" min="-200" max="200" onchange="calculateModifier('wil')">
+                    <div class="separator"></div>
+                    <input type="text" id="wil-mod" readonly class="mod">
+                    <div class="title">Willenskraft</div>
+                </div>
+                <div class="attribute">
+                    <input type="number" id="cha" value="0" min="-200" max="200" onchange="calculateModifier('cha')">
+                    <div class="separator"></div>
+                    <input type="number" id="cha-bonus" value="0" min="-200" max="200" onchange="calculateModifier('cha')">
+                    <div class="separator"></div>
+                    <input type="text" id="cha-mod" readonly class="mod">
+                    <div class="title">Charisma</div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        function calculateModifier(attr) {
+            let baseValue = parseInt(document.getElementById(attr).value);
+            let bonusValue = parseInt(document.getElementById(attr + '-bonus').value);
+            let totalValue = baseValue + bonusValue;
+            let modifier = Math.floor(totalValue / 10);
+
+            let modField = document.getElementById(attr + '-mod');
+            modField.value = modifier >= 0 ? '+' + modifier : modifier;
+            modField.style.color = modifier >= 0 ? 'blue' : 'red';
+        }
+
+        window.onload = function() {
+            // Initial calculation
+            let attributes = ['str', 'dex', 'con', 'vit', 'int', 'wis', 'wil', 'cha'];
+            attributes.forEach(attr => calculateModifier(attr));
+        };
+        </script>
+    </body>
+</html>
