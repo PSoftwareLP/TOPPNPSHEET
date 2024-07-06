@@ -101,3 +101,7 @@ function ComputeMovement(){
 
     output.value = baseMovement + placeholderModifier;
 }
+
+
+
+//================================================= ABILITY MODIFIER STUFF =================================================
