@@ -1,0 +1,67 @@
+﻿/* Ensure the printed page is A4 size */
+@page {
+    size: A4;
+    margin: 20mm;
+}
+
+
+body {
+    font-family: 'Garamond', serif;
+    background-color: white; /* Ensure background is white for printing */
+    color: black; /* Ensure text is black */
+}
+
+.character-sheet {
+    width: 100%;
+    max-width: 210mm; /* A4 width minus margins */
+    padding: 2mm;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+    border: 1px solid #ccc;
+}
+
+/*sorting elements*/
+.row {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    align-items: left;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+
+/*boxes*/
+.box {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset;
+    background: padding-box;
+}
+
+
+.styled-input {
+    width: 50px;
+    padding: 1px;
+    font-size: 0.8em;
+    border: 1px black;
+    border-radius: 1px;
+    text-align: center;
+}
+.styled-output {
+    width: 50px;
+    padding: 1px;
+    font-size: 1.2em;
+    border: 2px solid black;
+    border-radius: 1px;
+    text-align: center;
+}
+
+
+
+
