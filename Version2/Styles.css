@@ -7,17 +7,12 @@
 
 body {
     font-family: 'Garamond', serif;
-    background-color: white; 
-    color: black; 
 }
 
 .character-sheet {
     width: 100%;
     max-width: 210mm; /* A4 width minus margins */
-    padding: 2mm;
-    box-sizing: border-box;
     page-break-inside: avoid;
-    border: 1px solid #ccc;
 }
 
 /*sorting elements*/
@@ -33,44 +28,28 @@ body {
 /*boxes*/
 .box {
     padding: 5px;
+    margin: 5px;
     border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: inset;
-    background: padding-box;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    background: #f9f9f9;
 }
     .box attribute {
-        min-width: 300px;
         text-align: center;
         align-items: center;
     }
     .box ability {
-        min-width: 300px;
         text-align: left;
     }
     .box basicValue {
-        min-width: 300px;
         text-align: center;
         align-items: center;
     }
 
-
-.styled-input {
+/*specific items*/
+.input {
     width: 50px;
-    padding: 1px;
-    font-size: 0.8em;
-    border: 1px black;
-    border-radius: 1px;
-    text-align: center;
 }
-.styled-output {
-    width: 50px;
-    padding: 1px;
-    font-size: 1.2em;
-    border: 2px solid black;
-    border-radius: 1px;
-    text-align: center;
-}
-
 
 
 

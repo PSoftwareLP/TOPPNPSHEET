@@ -12,15 +12,35 @@ const characterData = {
     Mana: 5,
     Ausdauer: 5,
     //Attributes:
-    Staerke: 1,
-    Geschick: 1,
-    Konstitution: 1,
-    Willskraft: 1,
-    Charisma: 1,
-    Intelligenz: 1,
-    Weissheit: 1,
-    Vitalitaet: 1
+    attributes: {
+        Staerke: 1,
+        Geschick: 1,
+        Konstitution: 1,
+        Willskraft: 1,
+        Charisma: 1,
+        Intelligenz: 1,
+        Vitalitaet: 1
+    },
 };
+const abilities = [
+    { name: "Akrobatik", baseAttribute: "Staerke" },
+    { name: "Analyse", baseAttribute: "Intelligenz" },
+    { name: "Arkane Kunde", baseAttribute: "Intelligenz" },
+    { name: "Athletik", baseAttribute: "Geschick" },
+    { name: "Einschuechtern", baseAttribute: "Charisma" },
+    { name: "Fingerfaehrtigkeit", baseAttribute: "Geschick" },
+    { name: "Geschichte", baseAttribute: "Intelligenz" },
+    { name: "Greifen", baseAttribute: "Staerke" },
+    { name: "Heilkunde", baseAttribute: "Vitalitaet" },
+    { name: "Heimlichkeit", baseAttribute: "Geschick" },
+    { name: "Naturkunde", baseAttribute: "Intelligenz" },
+    { name: "Religion", baseAttribute: "Intelligenz" },
+    { name: "Taeuschen", baseAttribute: "Charisma" },
+    { name: "Ueberlebenskunst", baseAttribute: "Staerke" },
+    { name: "Ueberzeugen", baseAttribute: "Charisma" },
+    { name: "Wahrnehmen", baseAttribute: "Geschick" },
+    { name: "Werfen", baseAttribute: "Staerke" },
+];
 
 //Generate the html:
 function createPage() {
@@ -53,9 +73,9 @@ function createCharacterName() {
 }
 function createCharacterLevel() {
     return `<div class="box">
-        <label for="characterName">Character Level:</label>
-        <input onchange="Compute()" type="number" id="level-input" name="level" value="1">
-        <output type="text" id="level-out" readonly></output>
+        <label for="characterName">Character Level:</label>`
+        + createInput("level")
+        +`<output style="font-size: 1px;" id="level-out">
     </div>`;
 }
 function createBody() {
@@ -64,34 +84,32 @@ function createBody() {
         <div class="row">`
         + createAllAttributes()
         + createAllAbilities()
-        + createAllBasicValues()
+        + `<div class="box">`
+            + createAllBasicValues()
+            + createAllAttacks()
+        + `</div>`
         + `
         </div>
     </div>`;
 }
 function createAllAttributes() {
+    const attributesList = Object.keys(characterData.attributes);
     return `
     <div class="box">
         <div class="column">`
-        + createSingleAttributeBox(`Staerke`)
-        + createSingleAttributeBox(`Geschick`)
-        + createSingleAttributeBox(`Konstitution`)
-        + createSingleAttributeBox(`Willskraft`)
-        + createSingleAttributeBox(`Charisma`)
-        + createSingleAttributeBox(`Intelligenz`)
-        + createSingleAttributeBox(`Weissheit`)
-        + createSingleAttributeBox(`Vitalitaet`)
+        + attributesList.map(attribute => createSingleAttributeBox(attribute)).join('')
         + `
         </div>
     </div>`;
 }
 function createSingleAttributeBox(attribute) {
     return `
-    <div class="box">
+    <div class="box attribute">
         <div class="column">
-            <label for="characterName">${attribute}:</label>
-            <output class="styled-output" type="text" id="${attribute}-out" readonly></output>
-            <input onchange="Compute()" type="number" id="${attribute}-input" name="level" value="1">
+            <label for="characterName">${attribute}:</label>`
+            + createOutput(attribute)
+            + createInput(attribute)
+            +`
         </div>
     </div>
     `;
@@ -100,23 +118,7 @@ function createAllAbilities() {
     return `
     <div class="box">
         <div class="column">`
-         + createSingleAbility("Akrobatik", "Staerke")
-         + createSingleAbility("Analyse", "Intelligenz")
-         + createSingleAbility("Arkane Kunde", "Intelligenz")
-         + createSingleAbility("Athletik", "Geschick")
-         + createSingleAbility("Einschuechtern", "Charisma")
-         + createSingleAbility("Fingerfaehrtigkeit", "Geschick")
-         + createSingleAbility("Geschichte", "Intelligenz")
-         + createSingleAbility("Greifen", "Staerke")
-         + createSingleAbility("Heilkunde", "Vitalitaet")
-         + createSingleAbility("Heimlichkeit", "Geschick")
-         + createSingleAbility("Naturkunde", "Intelligenz")
-         + createSingleAbility("Religion", "Intelligenz")
-         + createSingleAbility("Taeuschen", "Charisma")
-         + createSingleAbility("Ueberlebenskunst", "Staerke")
-         + createSingleAbility("Ueberzeugen", "Charisma")
-         + createSingleAbility("Wahrnehmen", "Geschick")
-         + createSingleAbility("Werfen", "Staerke")
+        + abilities.map(abilities => createSingleAbility(abilities.name, abilities.baseAttribute)).join('')
         + `
         </div>
     </div >`;
@@ -125,9 +127,10 @@ function createSingleAbility(ability, baseAttribute) {
     return `
     <div class="box basicValue">
         <div class="row">
-            <input type="checkbox" onchange="Compute()" id="checkbox${ability}" name="option1">
-            <label>${ability}:  </label>
-            <output class="styled-output" type="text" id="${ability}-out" readonly></output>
+            <input maxlength="5" type="checkbox" onchange="Compute()" id="checkbox${ability}" name="option1">
+            <label>${ability} (${baseAttribute}):  </label>`
+        + createOutput(ability)
+            +`
         </div >
     </div>`;
 }
@@ -152,8 +155,9 @@ function createConstantBasicValue(basicValue) {
     return `
     <div class="box basicValue">
         <div class="column">
-            <label for="characterName">${basicValue}:</label>
-            <output class="styled-output" type="text" id="${basicValue}-out" readonly></output>
+            <label for="characterName">${basicValue}:</label>`
+            + createOutput(basicValue)
+            +`
         </div>
     </div>`;
 }
@@ -170,6 +174,29 @@ function createDynamicBasicValue(basicValue) {
     </div>`;
 }
 
+function createAllAttacks() {
+    return createSingleAttack()
+        + createSingleAttack()
+        + createSingleAttack()
+        + createSingleAttack();
+}
+function createSingleAttack() {
+    return `
+    <div class="box">
+        <div class="row">
+        angriff
+        </div>
+    </div>`
+}
+
+//single elements
+function createInput(name) {
+    return `<input class="input" onchange="Compute()" type="number" id="${name}-input" value="1"></input>`;
+}
+function createOutput(name) {
+    return `<output class="styled-output" type="text" id="${name}-out"></output>`;
+}
+
 
 //logic
 function Compute() {
@@ -181,19 +208,13 @@ function Compute() {
     ComputeAllAbilityModifiers();
 }
 function ComputeAllAttributeModifiers() {
-    ComputeAttributeModifiers(`Staerke`);
-    ComputeAttributeModifiers(`Geschick`);
-    ComputeAttributeModifiers(`Konstitution`);
-    ComputeAttributeModifiers(`Willskraft`);
-    ComputeAttributeModifiers(`Charisma`);
-    ComputeAttributeModifiers(`Intelligenz`);
-    ComputeAttributeModifiers(`Weissheit`);
-    ComputeAttributeModifiers(`Vitalitaet`);
+    const attributesList = Object.keys(characterData.attributes);
+    attributesList.forEach(attribute => ComputeAttributeModifiers(attribute));
 }
 function ComputeAttributeModifiers(attribute) {
     let attributeVal = parseInt(document.getElementById(`${attribute}-input`).value);
     document.getElementById(`${attribute}-out`).value = Math.floor(attributeVal / 10); // Correct assignment for value property    
-    characterData[attribute] = Math.floor(attributeVal / 10);
+    characterData.attributes[attribute] = Math.floor(attributeVal / 10);
 }
 function ComputeAllBasicValues() {
     ComputeUebungsbonus();
@@ -211,56 +232,40 @@ function ComputeUebungsbonus() {
 }
 function ComputeRuestung() {
     let attributeVal = 0;
-    attributeVal = 8 + characterData[`Konstitution`] + Math.floor(characterData[`Vitalitaet`] / 2);
+    attributeVal = 8 + characterData.attributes[`Konstitution`] + Math.floor(characterData.attributes[`Vitalitaet`] / 2);
     characterData["Ruestung"] = attributeVal;
     document.getElementById(`Ruestung-out`).value = attributeVal;
 }
 function ComputeGeschwingigkeit() {
     let attributeVal = 0;
-    attributeVal = 8 + characterData[`Geschick`] + Math.floor(characterData[`Vitalitaet`] / 2);
+    attributeVal = 8 + characterData.attributes[`Geschick`] + Math.floor(characterData.attributes[`Vitalitaet`] / 2);
     characterData["Geschwindigkeit"] = attributeVal;
     document.getElementById(`Geschwindigkeit-out`).value = attributeVal;
 }
 function ComputeLeben() {
     let attributeVal = 0;
-    attributeVal = (4 + characterData[`Konstitution`] + Math.floor(characterData[`Vitalitaet`] / 2)) * characterData[`level`];
+    attributeVal = (4 + characterData.attributes[`Konstitution`] + Math.floor(characterData.attributes[`Vitalitaet`] / 2)) * characterData[`level`];
     characterData["Leben"] = attributeVal;
     document.getElementById(`Leben-out`).value = attributeVal;
 }
 function ComputeMana() {
     let attributeVal = 0;
-    attributeVal = (4 + characterData[`Intelligenz`] + Math.floor(characterData[`Weissheit`] / 2)) * characterData[`level`];
+    attributeVal = (4 + characterData.attributes[`Intelligenz`] + Math.floor(characterData.attributes[`Vitalitaet`] / 2)) * characterData[`level`];
     characterData["Mana"] = attributeVal;
     document.getElementById(`Mana-out`).value = attributeVal;
 }
 function ComputeAusdauer() {
     let attributeVal = 0;
-    attributeVal = (4 + characterData[`Geschick`] + Math.floor(characterData[`Vitalitaet`] / 2)) * characterData[`level`];
+    attributeVal = (4 + characterData.attributes[`Geschick`] + Math.floor(characterData.attributes[`Vitalitaet`] / 2)) * characterData[`level`];
     characterData["Ausdauer"] = attributeVal;
     document.getElementById(`Ausdauer-out`).value = attributeVal;
 }
 
 function ComputeAllAbilityModifiers() {
-    ComputeAbilityModifiers("Akrobatik", "Staerke");
-    ComputeAbilityModifiers("Analyse", "Intelligenz");    
-    ComputeAbilityModifiers("Arkane Kunde", "Intelligenz");
-    ComputeAbilityModifiers("Athletik", "Geschick");   
-    ComputeAbilityModifiers("Einschuechtern", "Charisma");
-    ComputeAbilityModifiers("Fingerfaehrtigkeit", "Geschick");
-    ComputeAbilityModifiers("Geschichte", "Intelligenz");
-    ComputeAbilityModifiers("Greifen", "Staerke");
-    ComputeAbilityModifiers("Heilkunde", "Vitalitaet");
-    ComputeAbilityModifiers("Heimlichkeit", "Geschick");
-    ComputeAbilityModifiers("Naturkunde", "Intelligenz");
-    ComputeAbilityModifiers("Religion", "Intelligenz");
-    ComputeAbilityModifiers("Taeuschen", "Charisma");
-    ComputeAbilityModifiers("Ueberlebenskunst", "Staerke");
-    ComputeAbilityModifiers("Ueberzeugen", "Charisma");
-    ComputeAbilityModifiers("Wahrnehmen", "Geschick");
-    ComputeAbilityModifiers("Werfen", "Staerke");  
+        abilities.forEach(ability => ComputeAbilityModifiers(ability.name, ability.baseAttribute));
 }
 function ComputeAbilityModifiers(ability, attribute) {
-    let attributeVal = characterData[attribute];
+    let attributeVal = characterData.attributes[attribute];
     let checkbox = document.getElementById(`checkbox${ability}`);
     if (checkbox.checked) {
         attributeVal += characterData["Uebungsbonus"];
