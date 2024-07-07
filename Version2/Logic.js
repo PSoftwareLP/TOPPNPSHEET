@@ -123,7 +123,7 @@ function createAllAbilities() {
 }
 function createSingleAbility(ability, baseAttribute) {
     return `
-    <div class="box">
+    <div class="box basicValue">
         <div class="row">
             <input type="checkbox" onchange="Compute()" id="checkbox${ability}" name="option1">
             <label>${ability}:  </label>
@@ -135,28 +135,42 @@ function createAllBasicValues() {
     return `
     <div class="box">
         <div class="row">`
-        + createSingleBasicValue(`Uebungsbonus`)
-        + createSingleBasicValue(`Ruestung`)
-        + createSingleBasicValue(`Geschwindigkeit`)
+        + createConstantBasicValue(`Uebungsbonus`)
+        + createConstantBasicValue(`Ruestung`)
+        + createConstantBasicValue(`Geschwindigkeit`)
         + `
         </div>
         <div class="row">`
-        + createSingleBasicValue(`Leben`)
-        + createSingleBasicValue(`Mana`)
-        + createSingleBasicValue(`Ausdauer`)
+        + createDynamicBasicValue(`Leben`)
+        + createDynamicBasicValue(`Mana`)
+        + createDynamicBasicValue(`Ausdauer`)
         + `
         </div>
     </div >`;
 }
-function createSingleBasicValue(basicValue) {
+function createConstantBasicValue(basicValue) {
     return `
-    <div class="box">
+    <div class="box basicValue">
         <div class="column">
             <label for="characterName">${basicValue}:</label>
             <output class="styled-output" type="text" id="${basicValue}-out" readonly></output>
         </div>
     </div>`;
 }
+function createDynamicBasicValue(basicValue) {
+    return `
+    <div class="box basicValue">
+        <div class="column">
+            <label for="characterName">${basicValue}:</label>
+            <output class="styled-output" type="text" id="${basicValue}-out" readonly></output>
+            <div class="box"">
+            <output class="styled-output" readonly>_______</output>
+            </div>
+        </div>
+    </div>`;
+}
+
+
 //logic
 function Compute() {
     let level = parseInt(document.getElementById("level-input").value);
