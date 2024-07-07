@@ -42,7 +42,8 @@ const abilities = [
     { name: "Werfen", baseAttribute: "Staerke" },
 ];
 
-//Generate the html:
+//HTML
+//HTML: Structure
 function createPage() {
     return `
     <div class="character-sheet">
@@ -92,6 +93,8 @@ function createBody() {
         </div>
     </div>`;
 }
+
+//HTML: Attributes
 function createAllAttributes() {
     const attributesList = Object.keys(characterData.attributes);
     return `
@@ -114,6 +117,8 @@ function createSingleAttributeBox(attribute) {
     </div>
     `;
 }
+
+//HTML: Abilities
 function createAllAbilities() {
     return `
     <div class="box">
@@ -134,6 +139,8 @@ function createSingleAbility(ability, baseAttribute) {
         </div >
     </div>`;
 }
+
+//HTML: BasicValues
 function createAllBasicValues() {
     return `
     <div class="box">
@@ -165,38 +172,67 @@ function createDynamicBasicValue(basicValue) {
     return `
     <div class="box basicValue">
         <div class="column">
-            <label for="characterName">${basicValue}:</label>
-            <output class="styled-output" type="text" id="${basicValue}-out" readonly></output>
-            <div class="box"">
-            <output class="styled-output" readonly>_______</output>
+            <label for="characterName">${basicValue}:</label>`
+            + createOutput(basicValue)
+            +`<output class="output" readonly>_____</output>
+        </div>
+    </div>`;
+}
+
+//HTML: Attacks
+function createAllAttacks() {
+    return createSingleAttack("attack1")
+        + createSingleAttack("attack2")
+    + createSingleAttack("attack3")
+    + createSingleAttack("attack4");
+}
+function createSingleAttack(name) {
+    return `
+        <div class="box">
+        
+    <div class="row">
+            <div class="row">
+                ${createAttributeDropdown(name)}
+            </div>
+            <div class="row">
+                ${createDiceDropdown(name)}
+            </div>
+            <div class="row">`
+            + createInput(name + "-itemBonus")
+            +`</div>
+            <div class="column">
+                <label>HIT:</label>
+                `+ createOutput(name + "-bonus") +`
+            </div>
+            <div class="column">
+                <label>DMG:</label>
+                `+ createOutput(name + "-damage") +`
             </div>
         </div>
     </div>`;
 }
 
-function createAllAttacks() {
-    return createSingleAttack()
-        + createSingleAttack()
-        + createSingleAttack()
-        + createSingleAttack();
-}
-function createSingleAttack() {
-    return `
-    <div class="box">
-        <div class="row">
-        angriff
-        </div>
-    </div>`
-}
-
-//single elements
+//HTML: single elements
 function createInput(name) {
     return `<input class="input" onchange="Compute()" type="number" id="${name}-input" value="1"></input>`;
 }
 function createOutput(name) {
-    return `<output class="styled-output" type="text" id="${name}-out"></output>`;
+    return `<output class="output" type="text" id="${name}-out"></output>`;
 }
-
+function createDiceDropdown(name) {
+    const diceOptions = ["d4", "d6", "d8", "d10", "d12", "d20"];
+    return `
+    <select id="${name}-dice-dropdown" onchange="Compute()">
+        ${diceOptions.map(dice => `<option value="${dice}">${dice}</option>`).join('')}
+    </select>`;
+}
+function createAttributeDropdown(name) {
+    const attributesList = Object.keys(characterData.attributes);
+    return `
+    <select id="${name}-attribute-dropdown" onchange="Compute()">
+        ${attributesList.map(attribute => `<option value="${attribute}">${attribute}</option>`).join('')}
+    </select>`;
+}
 
 //logic
 function Compute() {
@@ -206,7 +242,10 @@ function Compute() {
     ComputeAllAttributeModifiers();
     ComputeAllBasicValues();
     ComputeAllAbilityModifiers();
+    ComputeAllAttacks();
 }
+
+//logic: attributes
 function ComputeAllAttributeModifiers() {
     const attributesList = Object.keys(characterData.attributes);
     attributesList.forEach(attribute => ComputeAttributeModifiers(attribute));
@@ -216,6 +255,8 @@ function ComputeAttributeModifiers(attribute) {
     document.getElementById(`${attribute}-out`).value = Math.floor(attributeVal / 10); // Correct assignment for value property    
     characterData.attributes[attribute] = Math.floor(attributeVal / 10);
 }
+
+//logic: basic values
 function ComputeAllBasicValues() {
     ComputeUebungsbonus();
     ComputeRuestung();
@@ -225,8 +266,7 @@ function ComputeAllBasicValues() {
     ComputeAusdauer();
 }
 function ComputeUebungsbonus() {
-    let attributeVal = 0;
-    attributeVal = 1 + Math.floor(characterData[`level`] / 4);
+    let attributeVal = 1 + Math.floor(characterData[`level`] / 3);
     characterData["Uebungsbonus"] = attributeVal;
     document.getElementById(`Uebungsbonus-out`).value = attributeVal;
 }
@@ -261,6 +301,7 @@ function ComputeAusdauer() {
     document.getElementById(`Ausdauer-out`).value = attributeVal;
 }
 
+//logic: abilities
 function ComputeAllAbilityModifiers() {
         abilities.forEach(ability => ComputeAbilityModifiers(ability.name, ability.baseAttribute));
 }
@@ -272,10 +313,30 @@ function ComputeAbilityModifiers(ability, attribute) {
     }
     document.getElementById(`${ability}-out`).value = attributeVal; // Correct assignment for value property    
 }
+
+//logic: attacks
+function ComputeAllAttacks() {
+    ComputeAttack("attack1");
+    ComputeAttack("attack2");
+    ComputeAttack("attack3");
+    ComputeAttack("attack4");
+}
+function ComputeAttack(name) {
+    let attribute = document.getElementById(`${name}-attribute-dropdown`).value;
+    let dice = document.getElementById(`${name}-dice-dropdown`).value;
+    let itemBonus = parseInt(document.getElementById(`${name}-itemBonus-input`).value);
+    let hit = characterData.Uebungsbonus + itemBonus + characterData.attributes[attribute];
+    let dmg = characterData.Uebungsbonus + itemBonus + characterData.attributes[attribute];
+    document.getElementById(`${name}-bonus-out`).value = " " + hit + " + d20";
+    document.getElementById(`${name}-damage-out`).value = " " + dmg + " + " + dice;    
+}
+
 //linking between the html and java script for initial call
 function insertCharacterSheet() {
     const container = document.getElementById('CharacterPage');
     container.innerHTML = createPage();
 }
+
+
 // Call the function to insert the CharacterSheet box when the page loads
 document.addEventListener('DOMContentLoaded', insertCharacterSheet);
