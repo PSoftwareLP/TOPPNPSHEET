@@ -28,7 +28,7 @@
             <!--Dexterity-->
             <div class="contentBox attribute">
                 <label>DexterityAttribute:</label>
-                <input type="number" id="AttributeDexterity" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Dexterity')">
+                <input type="number" id="AttributeDexterity" value="0" min="0" max="100" onchange="ComputeAttributeModifier('Dexterity'); ComputeAbilityModifier('Dexterity');">
                 <div class="separator"></div>
                 <label>DexterityModifier:</label>
                 <input type="text" id="AttributeModifierDexterity" readonly>
@@ -77,8 +77,8 @@
         <!--Abilities-->
         <div class="verticalContainer">
             <div class="contentBox ability">
-                <label>AbilityModifier1:</label>
-                <b><output id="AbilityModifier1" ></b>
+                <label>Acrobatics:</label>
+                <b><input id="AbilityModifierAcrobatics" readonly></b>
             </div>
         </div>
         <div class="columnContainer">

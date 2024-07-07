@@ -105,3 +105,14 @@ function ComputeMovement(){
 
 
 //================================================= ABILITY MODIFIER STUFF =================================================
+
+function ComputeAbilityModifier(AttributeId){
+
+    switch(AttributeId){
+        case 'Dexterity':
+            let input = document.getElementById('AttributeModifier' + AttributeId)
+            let outputAcrobatics = document.getElementById('AbilityModifierAcrobatics')
+            outputAcrobatics.value = "+" + input.value
+    }
+
+}
