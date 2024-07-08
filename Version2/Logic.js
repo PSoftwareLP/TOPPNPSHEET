@@ -8,7 +8,7 @@ const characterData = {
     Uebungsbonus: 2,
     Ruestung: 10,
     Initiative: 10,
-    Bewegungsrate: 8,
+    Bewegung: 8,
     Leben: 5,
     Mana: 5,
     Ausdauer: 5,
@@ -149,7 +149,7 @@ function createAllBasicValues() {
         + createConstantBasicValue(`Uebungsbonus`)
         + createTempBasicValue(`Ruestung`)
         + createTempBasicValue(`Initiative`)
-        + createTempBasicValue('Bewegungsrate')
+        + createTempBasicValue('Bewegung')
         + `
         </div>
         <div class="row">`
@@ -163,7 +163,7 @@ function createAllBasicValues() {
 function createConstantBasicValue(basicValue) {
     return `
     <div class="box basicValue">
-        <div class="column">
+        <div class="value-column">
             <label for="characterName">${basicValue}:</label>`
             + createOutput(basicValue)
             +`
@@ -173,7 +173,7 @@ function createConstantBasicValue(basicValue) {
 function createDynamicBasicValue(basicValue) {
     return `
     <div class="box basicValue">
-        <div class="column">
+        <div class="value-column">
             <label for="characterName">${basicValue}:</label>`
             + createOutput(basicValue)
             +`<output class="output" readonly>_____</output>
@@ -183,10 +183,10 @@ function createDynamicBasicValue(basicValue) {
 function createTempBasicValue(basicValue) {
     return `
     <div class="box basicValue">
-        <div class="column">
+        <div class="value-column">
             <label for="characterName">${basicValue}:</label>`
             + createOutput(basicValue)
-            +`_________`
+            +`____________`
             + `<output class="output" readonly>_____</output>`
         + `(temp. Bonus)
         </div>
@@ -297,7 +297,7 @@ function ComputeGeschwingigkeit() {
     document.getElementById(`Initiative-out`).value = attributeVal;
 }
 function ComputeBewegungsrate() {
-    document.getElementById('Bewegungsrate-out').value = 8;
+    document.getElementById('Bewegung-out').value = 8;
 }
 function ComputeLeben() {
     let attributeVal = 0;

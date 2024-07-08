@@ -24,6 +24,12 @@ body {
     display: flex;
     flex-direction: column;
 }
+.value-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 /*boxes*/
 .box {
