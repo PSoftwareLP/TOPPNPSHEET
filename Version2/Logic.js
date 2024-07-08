@@ -7,7 +7,8 @@ const characterData = {
     //basic values
     Uebungsbonus: 2,
     Ruestung: 10,
-    Geschwindigkeit: 10,
+    Initiative: 10,
+    Bewegungsrate: 8,
     Leben: 5,
     Mana: 5,
     Ausdauer: 5,
@@ -146,8 +147,9 @@ function createAllBasicValues() {
     <div class="box">
         <div class="row">`
         + createConstantBasicValue(`Uebungsbonus`)
-        + createConstantBasicValue(`Ruestung`)
-        + createConstantBasicValue(`Geschwindigkeit`)
+        + createTempBasicValue(`Ruestung`)
+        + createTempBasicValue(`Initiative`)
+        + createTempBasicValue('Bewegungsrate')
         + `
         </div>
         <div class="row">`
@@ -178,7 +180,18 @@ function createDynamicBasicValue(basicValue) {
         </div>
     </div>`;
 }
-
+function createTempBasicValue(basicValue) {
+    return `
+    <div class="box basicValue">
+        <div class="column">
+            <label for="characterName">${basicValue}:</label>`
+            + createOutput(basicValue)
+            +`_________`
+            + `<output class="output" readonly>_____</output>`
+        + `(temp. Bonus)
+        </div>
+    </div>`;
+}
 //HTML: Attacks
 function createAllAttacks() {
     return createSingleAttack("attack1")
@@ -261,6 +274,7 @@ function ComputeAllBasicValues() {
     ComputeUebungsbonus();
     ComputeRuestung();
     ComputeGeschwingigkeit();
+    ComputeBewegungsrate();
     ComputeLeben();
     ComputeMana();
     ComputeAusdauer();
@@ -279,8 +293,11 @@ function ComputeRuestung() {
 function ComputeGeschwingigkeit() {
     let attributeVal = 0;
     attributeVal = 8 + characterData.attributes[`Geschick`] + Math.floor(characterData.attributes[`Vitalitaet`] / 2);
-    characterData["Geschwindigkeit"] = attributeVal;
-    document.getElementById(`Geschwindigkeit-out`).value = attributeVal;
+    characterData["Initiative"] = attributeVal;
+    document.getElementById(`Initiative-out`).value = attributeVal;
+}
+function ComputeBewegungsrate() {
+    document.getElementById('Bewegungsrate-out').value = 8;
 }
 function ComputeLeben() {
     let attributeVal = 0;
