@@ -17,7 +17,7 @@ const characterData = {
         Staerke: 1,
         Geschick: 1,
         Konstitution: 1,
-        Willskraft: 1,
+        Willenskraft: 1,
         Charisma: 1,
         Intelligenz: 1,
         Vitalitaet: 1
@@ -188,7 +188,7 @@ function createTempBasicValue(basicValue) {
             + createOutput(basicValue)
             +`____________`
             + `<output class="output" readonly>_____</output>`
-        + `(temp. Bonus)
+        + `<span class="smaller-text">(temp. Bonus)</span>
         </div>
     </div>`;
 }
@@ -296,6 +296,7 @@ function ComputeGeschwingigkeit() {
     characterData["Initiative"] = attributeVal;
     document.getElementById(`Initiative-out`).value = attributeVal;
 }
+//does not 'compute' anything at the moment, but maybe we want it dependent on some attribute as well?
 function ComputeBewegungsrate() {
     document.getElementById('Bewegung-out').value = 8;
 }

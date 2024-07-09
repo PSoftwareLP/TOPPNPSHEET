@@ -69,4 +69,6 @@ body {
     border-radius: 5px;
 }
 
-
+.smaller-text {
+    font-size: 10px; /* You can adjust the size as needed */
+}
