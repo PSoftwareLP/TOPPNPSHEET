@@ -1,0 +1,72 @@
+﻿/* Ensure the printed page is A4 size */
+@page {
+    size: A4;
+    margin: 20mm;
+}
+
+
+body {
+    font-family: 'Garamond', serif;
+}
+
+.character-sheet {
+    width: 100%;
+    max-width: 210mm; /* A4 width minus margins */
+    page-break-inside: avoid;
+}
+
+/*sorting elements*/
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+.value-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/*boxes*/
+.box {
+    padding: 3px;
+    margin: 3px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    background: #f9f9f9;
+    text-align: center;
+    align-items: center;
+}
+    .box attribute {
+        text-align: center;
+        align-items: center;
+    }
+    .box ability {
+        text-align: left;
+    }
+    .box basicValue {
+        text-align: center;
+        align-items: center;
+    }
+
+/*specific items*/
+.input {
+    width: 50px;
+}
+.output {
+    width: 50px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
