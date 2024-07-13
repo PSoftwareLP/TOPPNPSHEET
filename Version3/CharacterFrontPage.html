@@ -155,8 +155,9 @@
                     </div>
                 </div>
             </div>
-            <div class="box" v-for="attack in attacks" :key="attack.name">
+            <div class="box" v-for="attack in attacks" :key="attack.id">
                 <div class="row">
+                    <input type="text" v-model="attack.name">
                     <div class="column">
                         <div class="row">
                             <select v-model="attack.attribute" @change="compute">
@@ -186,8 +187,10 @@
                         <label>DMG:</label>
                         <output class="output">{{ getAttackDamage(attack) }}</outputclass="output">
                     </div>
+                    <button @click="removeAttack(attack.id)">Remove</button>
                 </div>
             </div>
+            <button @click="addAttack">Add New Attack</button>
         </div>
         <script src="Logic.js"></script>
         <script src="app.js"></script>

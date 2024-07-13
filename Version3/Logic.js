@@ -53,10 +53,8 @@ new Vue({
             { name: "Werfen", baseAttribute: "Staerke", checked: false }
         ],
         attacks: [
-            { name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 },
-            { name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0 },
-            { name: "attack3", attribute: "Staerke", dice: "d6", itemBonus: 0 },
-            { name: "attack4", attribute: "Staerke", dice: "d6", itemBonus: 0 }
+            { id: 1, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 },
+            { id: 2, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 }
         ],
         successes: [false, false, false],
         failures: [false, false, false],
@@ -151,6 +149,13 @@ new Vue({
         },
         getArmorBonus(armor) {
             return `${armor.itemBonus}`;
+        },
+        addAttack() {
+            const newId = this.attacks.length + 1;
+            this.attacks.push({ id: newId, name: `Attack ${newId}`, attribute: "Staerke", dice: "d6", itemBonus: 0, count: 0 });
+        },
+        removeAttack(attackId) {
+            this.attacks = this.attacks.filter(attack => attack.id !== attackId);
         }
     },
     mounted() {
