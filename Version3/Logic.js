@@ -57,6 +57,16 @@ new Vue({
             { name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0 },
             { name: "attack3", attribute: "Staerke", dice: "d6", itemBonus: 0 },
             { name: "attack4", attribute: "Staerke", dice: "d6", itemBonus: 0 }
+        ],
+        successes: [false, false, false],
+        failures: [false, false, false],
+        armors: [
+            { name: "Helm", itemBonus: 0 },
+            { name: "Brust", itemBonus: 0 },
+            { name: "Arme", itemBonus: 0 },
+            { name: "Schild", itemBonus: 0 },
+            { name: "Beine", itemBonus: 0 },
+            { name: "Schuhe", itemBonus: 0 }
         ]
     },
     methods: {
@@ -138,6 +148,9 @@ new Vue({
         },
         getAttackDamage(attack) {
             return `${attack.damage} + ${attack.dice}`;
+        },
+        getArmorBonus(armor) {
+            return `${armor.itemBonus}`;
         }
     },
     mounted() {

@@ -9,85 +9,96 @@
 </head>
 <body>
     <div id="app">
-            <div class="character-sheet">
-                <div class="box">
-                    <div class="column">
-                        <div class="box">
-                            <div class="row">
-                                <div class="box">
-                                    <label for="characterName">Character Name:</label>
-                                    <input type="text" v-model="characterName">
+        <!--First Page-->
+        <div class="character-sheet">
+            <div class="box">
+                <div class="column">
+                    <div class="box">
+                        <div class="row">
+                            <div class="box">
+                                <label for="characterName">Character Name:</label>
+                                <input type="text" v-model="characterName">
+                            </div>
+                            <div class="box">
+                                <label for="level">Character Level: </label>
+                                <input class="input" type="number" v-model="characterData.level" @input="compute">
+                                <output style="font-size: 1px;">{{ characterData.level }}</output>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="row">
+                            <div class="box">
+                                <div class="column">
+                                    <div v-for="(value, attribute) in attributeInputs" :key="attribute" class="box attribute">
+                                        <div class="column">
+                                            <label :for="attribute">{{ attribute }}:</label>
+                                            <output class="output">{{ getComputedAttribute(attribute) }}</output>
+                                            <input class="input" type="number" v-model="attributeInputs[attribute]" @input="updateAttribute(attribute)">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="box">
-                                    <label for="level">Character Level: </label>
-                                    <input class="input" type="number" v-model="characterData.level" @input="compute">
-                                    <output style="font-size: 1px;">{{ characterData.level }}</output>
-                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="column">
+                                    <div v-for="ability in abilities" :key="ability.name" class="box basicValue">
+                                        <div class="row">
+                                            <input type="checkbox" :id="'checkbox' + ability.name" v-model="ability.checked" @change="compute">
+                                            <label>{{ ability.name }} ({{ ability.baseAttribute }}):</label>
+                                            <output class="output">{{ getAbilityModifier(ability.name, ability.baseAttribute) }}</output>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="box">
                                 <div class="row">
-                                    <div class="box">
-                                        <div class="column">
-                                            <div v-for="(value, attribute) in attributeInputs" :key="attribute" class="box attribute">
-                                                <div class="column">
-                                                    <label :for="attribute">{{ attribute }}:</label>
-                                                    <output class="output">{{ getComputedAttribute(attribute) }}</output>
-                                                    <input class="input" type="number" v-model="attributeInputs[attribute]" @input="updateAttribute(attribute)">
-                                                </div>
-                                            </div>
+                                    <div class="box basicValue" v-for="value in ['Uebungsbonus', 'Ruestung', 'Initiative', 'Bewegung']" :key="value">
+                                        <div class="value-column">
+                                            <label :for="value">{{ value }}:</label>
+                                            <output class="output">{{ characterData[value] }}</output>
+                                            <div v-if="value!=='Uebungsbonus'">____________</div>
+                                            <output v-if="value!=='Uebungsbonus'" class="output" readonly>_____</output>
+                                            <div v-if="value!=='Uebungsbonus'">(temp. Bonus)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="box basicValue" v-for="value in ['Leben', 'Mana', 'Ausdauer']" :key="value">
+                                        <div class="value-column">
+                                            <label :for="value">{{ value }}:</label>
+                                            <output class="output">{{ characterData[value] }}</output>
+                                            <output class="output" readonly>_____</output>
                                         </div>
                                     </div>
                                     <div class="box">
-                                        <div class="column">
-                                            <div v-for="ability in abilities" :key="ability.name" class="box basicValue">
-                                                <div class="row">
-                                                    <input type="checkbox" :id="'checkbox' + ability.name" v-model="ability.checked" @change="compute">
-                                                    <label>{{ ability.name }} ({{ ability.baseAttribute }}):</label>
-                                                    <output class="output">{{ getAbilityModifier(ability.name, ability.baseAttribute) }}</output>
-                                                </div>
+                                        <p>Ueberlebenswuerfe</p>
+                                        <div class="saving-throws">
+                                            <div v-for="(success, index) in successes" :key="'success' + index" class="saving-throw">
+                                                <label :for="'success' + index"> {{ 3 - index }}</label>
+                                                <input type="checkbox" :id="'success' + index" v-model="successes[index]" class="success">
+                                            </div>
+                                            <div> Leben - Tod </div>
+                                            <div v-for="(failure, index) in failures" :key="'failure' + index" class="saving-throw">
+                                                <label :for="'failure' + index">{{ index + 1 }}</label>
+                                                <input type="checkbox" :id="'failure' + index" v-model="failures[index]" class="failure">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="box">
-                                        <div class="row">
-                                            <div class="box basicValue" v-for="value in ['Uebungsbonus', 'Ruestung', 'Initiative', 'Bewegung']" :key="value">
-                                                <div class="value-column">
-                                                    <label :for="value">{{ value }}:</label>
-                                                    <output class="output">{{ characterData[value] }}</output>
-                                                    <div v-if="value!=='Uebungsbonus'">____________</div>
-                                                    <output v-if="value!=='Uebungsbonus'" class="output" readonly>_____</output>
-                                                    <div v-if="value!=='Uebungsbonus'">(temp. Bonus)</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="box basicValue" v-for="value in ['Leben', 'Mana', 'Ausdauer']" :key="value">
-                                                <div class="value-column">
-                                                    <label :for="value">{{ value }}:</label>
-                                                    <output class="output">{{ characterData[value] }}</output>                                                    
-                                                    <output class="output" readonly>_____</output>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="box" v-for="attack in attacks" :key="attack.name">
+                                </div>
+                                <div class="box" v-for="attack in attacks" :key="attack.name">
+                                    <div class="row">
+                                        <div class="column">
                                             <div class="row">
-                                                <select v-model="attack.attribute" @change="compute">
-                                                    <option v-for="attribute in Object.keys(characterData.attributes)" :value="attribute">{{ attribute }}</option>
-                                                </select>
-                                                <select v-model="attack.dice" @change="compute">
-                                                    <option v-for="dice in ['d4', 'd6', 'd8', 'd10', 'd12', 'd20']" :value="dice">{{ dice }}</option>
-                                                </select>
-                                                <input class="input" type="number" v-model="attack.itemBonus" @change="compute">
-                                                <div class="column">
-                                                    <label>HIT:</label>
-                                                    <output class="output">{{ getAttackHit(attack) }}</output>
-                                                </div>
-                                                <div class="column">
-                                                    <label>DMG:</label>
-                                                    <output class="output">{{ getAttackDamage(attack) }}</outputclass="output">
-                                                </div>
+                                                <output class="output">{{ attack.name }}</output>                                                
                                             </div>
+                                        </div>
+                                        <div class="column">
+                                            <label>HIT:</label>
+                                            <output class="output">{{ getAttackHit(attack) }}</output>
+                                        </div>
+                                        <div class="column">
+                                            <label>DMG:</label>
+                                            <output class="output">{{ getAttackDamage(attack) }}</outputclass="output">
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +107,89 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <!--Second Page-->
+        <div class="character-sheet">
+            <div class="box">
+                <div class="row">
+                    <div class="box">
+                        <label for="characterName">Character Name:</label>
+                        <input type="text" v-model="characterName">
+                    </div>
+                    <div class="box">
+                        <label for="level">Character Level: </label>
+                        <output class="output">{{ characterData.level }}</output>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="box" v-for="armor in armors" :key="armor.name">
+                    <div class="row">
+                        <div class="column">
+                            <div class="row">
+                                <input class="input" type="number" v-model="armor.itemBonus" @change="compute">
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label>RuestungsBonus: ({{armor.name}}) </label>
+                            <output class="output">{{ getArmorBonus(armor) }}</output>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--third page-->
+        <div class="character-sheet">
+            <div class="box">
+                <div class="row">
+                    <div class="box">
+                        <label for="characterName">Character Name:</label>
+                        <input type="text" v-model="characterName">
+                    </div>
+                    <div class="box">
+                        <label for="level">Character Level: </label>
+                        <output class="output">{{ characterData.level }}</output>
+                    </div>
+                    <div class="box">
+                        <label for="level">Fähigkeiten eingeben: </label>
+                    </div>
+                </div>
+            </div>
+            <div class="box" v-for="attack in attacks" :key="attack.name">
+                <div class="row">
+                    <div class="column">
+                        <div class="row">
+                            <select v-model="attack.attribute" @change="compute">
+                                <option v-for="attribute in Object.keys(characterData.attributes)" :value="attribute">{{ attribute }}</option>
+                            </select>
+                            <select v-model="attack.dice" @change="compute">
+                                <option v-for="dice in ['d4', 'd6', 'd8', 'd10', 'd12', 'd20']" :value="dice">{{ dice }}</option>
+                            </select>
+                            <input class="input" type="number" v-model="attack.itemBonus" @change="compute">
+                        </div>
+                        <div class="row">
+                            <div class="column">
+                                <label>Mana:</label>
+                                <input class="input" type="number" @change="compute">
+                            </div>
+                            <div class="column">
+                                <label>Ausdauer:</label>
+                                <input class="input" type="number" @change="compute">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <label>HIT:</label>
+                        <output class="output">{{ getAttackHit(attack) }}</output>
+                    </div>
+                    <div class="column">
+                        <label>DMG:</label>
+                        <output class="output">{{ getAttackDamage(attack) }}</outputclass="output">
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="Logic.js"></script>
         <script src="app.js"></script>
-    </body>
-    </html>
+</body>
+</html>
