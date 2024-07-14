@@ -5,7 +5,6 @@ new Vue({
     el: '#app',
     data: {
         characterName: '',
-        numberOfAttacks: 2,
         characterData: {
             level: 1,
             Uebungsbonus: 2,
@@ -53,19 +52,21 @@ new Vue({
             { name: "Wahrnehmen", baseAttribute: "Geschick", checked: false },
             { name: "Werfen", baseAttribute: "Staerke", checked: false }
         ],
+        numberOfAttacks: 2,
         attacks: [
             { id: 1, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 },
             { id: 2, name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0 }
         ],
         successes: [false, false, false],
         failures: [false, false, false],
-        armors: [
-            { name: "Helm", itemBonus: 0 },
-            { name: "Brust", itemBonus: 0 },
-            { name: "Arme", itemBonus: 0 },
-            { name: "Schild", itemBonus: 0 },
-            { name: "Beine", itemBonus: 0 },
-            { name: "Schuhe", itemBonus: 0 }
+        numberOfItems: 6,
+        items: [
+            { id: 1, name: "Helm", itemBonus: 0 },
+            { id: 2, name: "Brust", itemBonus: 0 },
+            { id: 3, name: "Schild", itemBonus: 0 },
+            { id: 4, name: "Arme", itemBonus: 0 },
+            { id: 5, name: "Beine", itemBonus: 0 },
+            { id: 6, name: "Schuhe", itemBonus: 0 }
         ]
     },
     methods: {
@@ -148,9 +149,6 @@ new Vue({
         getAttackDamage(attack) {
             return `${attack.damage} + ${attack.dice}`;
         },
-        getArmorBonus(armor) {
-            return `${armor.itemBonus}`;
-        },
         addAttack() {
             this.numberOfAttacks = this.numberOfAttacks + 1;
             newId = this.numberOfAttacks;
@@ -158,6 +156,14 @@ new Vue({
         },
         removeAttack(attackId) {
             this.attacks = this.attacks.filter(attack => attack.id !== attackId);
+        },
+        addItem() {
+            this.numberOfItems = this.numberOfItems + 1;
+            newId = this.numberOfItems;
+            this.items.push({ id: newId, name: `Item ${newId}`, itemBonus: 0, count: 0 });
+        },
+        removeItem(itemId) {
+            this.items = this.items.filter(items => items.id !== itemId);
         }
     },
     mounted() {
