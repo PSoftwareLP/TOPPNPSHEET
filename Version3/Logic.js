@@ -5,6 +5,7 @@ new Vue({
     el: '#app',
     data: {
         characterName: '',
+        numberOfAttacks: 2,
         characterData: {
             level: 1,
             Uebungsbonus: 2,
@@ -54,7 +55,7 @@ new Vue({
         ],
         attacks: [
             { id: 1, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 },
-            { id: 2, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 }
+            { id: 2, name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0 }
         ],
         successes: [false, false, false],
         failures: [false, false, false],
@@ -151,7 +152,8 @@ new Vue({
             return `${armor.itemBonus}`;
         },
         addAttack() {
-            const newId = this.attacks.length + 1;
+            this.numberOfAttacks = this.numberOfAttacks + 1;
+            newId = this.numberOfAttacks;
             this.attacks.push({ id: newId, name: `Attack ${newId}`, attribute: "Staerke", dice: "d6", itemBonus: 0, count: 0 });
         },
         removeAttack(attackId) {
@@ -162,3 +164,4 @@ new Vue({
         this.compute();
     }
 });
+
