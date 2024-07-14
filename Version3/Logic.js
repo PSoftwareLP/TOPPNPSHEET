@@ -7,6 +7,7 @@ new Vue({
         characterName: '',
         characterData: {
             level: 1,
+            inspiration: 0,
             Uebungsbonus: 2,
             Ruestung: 10,
             Initiative: 10,
@@ -61,12 +62,12 @@ new Vue({
         failures: [false, false, false],
         numberOfItems: 6,
         items: [
-            { id: 1, name: "Helm", itemBonus: 0 },
-            { id: 2, name: "Brust", itemBonus: 0 },
-            { id: 3, name: "Schild", itemBonus: 0 },
-            { id: 4, name: "Arme", itemBonus: 0 },
-            { id: 5, name: "Beine", itemBonus: 0 },
-            { id: 6, name: "Schuhe", itemBonus: 0 }
+            { id: 1, name: "Helm", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 2, name: "Brust", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 3, name: "Schild", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 4, name: "Arme", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 5, name: "Beine", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 6, name: "Schuhe", bonusDimension: "Ruestung", itemBonus: 0 }
         ]
     },
     methods: {
@@ -99,7 +100,13 @@ new Vue({
             this.characterData.Uebungsbonus = 1 + Math.floor(this.characterData.level / 3);
         },
         computeRuestung() {
-            this.characterData.Ruestung = 8 + this.characterData.attributes.Konstitution + Math.floor(this.characterData.attributes.Vitalitaet / 2);
+            let bonusRuestungTemp = 0;
+            for (let item of this.items) {
+                if (item.bonusDimension === "Ruestung") {
+                    bonusRuestungTemp += Number(item.itemBonus);
+                }
+            }
+            this.characterData.Ruestung = 8 + this.characterData.attributes.Konstitution + Math.floor(this.characterData.attributes.Vitalitaet / 2) + bonusRuestungTemp;
         },
         computeGeschwindigkeit() {
             this.characterData.Initiative = 8 + this.characterData.attributes.Geschick + Math.floor(this.characterData.attributes.Vitalitaet / 2);
@@ -160,7 +167,7 @@ new Vue({
         addItem() {
             this.numberOfItems = this.numberOfItems + 1;
             newId = this.numberOfItems;
-            this.items.push({ id: newId, name: `Item ${newId}`, itemBonus: 0, count: 0 });
+            this.items.push({ id: newId, name: `Item ${newId}`, bonusDimension: "Staerke", itemBonus: 0, count: 0 });
         },
         removeItem(itemId) {
             this.items = this.items.filter(items => items.id !== itemId);
