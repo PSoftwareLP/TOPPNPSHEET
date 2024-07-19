@@ -1,5 +1,7 @@
+/*Logic.js is the file with the logic of computation of the values*/
 
-Vue.component('ExampleTemplate', {template: `<div class="box"><p> a good trick won't be revealed by the wizard.</p></div>`});
+
+Vue.component('ExampleTemplate', { template: `<div class="box"><p> a good trick won't be revealed by the wizard.</p></div>` });
 
 new Vue({
     el: '#app',
@@ -14,26 +16,17 @@ new Vue({
             Bewegung: 8,
             Leben: 5,
             Mana: 5,
-            Ausdauer: 5,
-            attributes: {
-                Staerke: 1,
-                Geschick: 1,
-                Konstitution: 1,
-                Willskraft: 1,
-                Charisma: 1,
-                Intelligenz: 1,
-                Vitalitaet: 1
-            }
+            Ausdauer: 5
         },
-        attributeInputs: {
-            Staerke: 1,
-            Geschick: 1,
-            Konstitution: 1,
-            Willskraft: 1,
-            Charisma: 1,
-            Intelligenz: 1,
-            Vitalitaet: 1
-        },
+        attributes: [
+            { name: "Staerke", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
+            { name: "Geschick", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
+            { name: "Konstitution", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
+            { name: "Willskraft", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
+            { name: "Charisma", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
+            { name: "Intelligenz", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
+            { name: "Vitalitaet", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 }
+        ],
         abilities: [
             { name: "Akrobatik", baseAttribute: "Staerke", checked: false },
             { name: "Analyse", baseAttribute: "Intelligenz", checked: false },
@@ -58,6 +51,7 @@ new Vue({
             { id: 1, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 },
             { id: 2, name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0 }
         ],
+        /*death savingthrows*/
         successes: [false, false, false],
         failures: [false, false, false],
         numberOfItems: 6,
@@ -72,21 +66,36 @@ new Vue({
     },
     methods: {
         compute() {
-            this.computeAllAttributeModifiers();
+            /*changes in the attribute trigger the updateAttribute function. Therefore this "this.computeAllAttributes();" is not necessary.*/
             this.computeAllBasicValues();
             this.computeAllAbilityModifiers();
             this.computeAllAttacks();
         },
-        updateAttribute(attribute) {
-            this.characterData.attributes[attribute] = this.getComputedAttribute(attribute);
+        /*ATTRIBUTES*/
+        computeAllAttributes() {
+            for (let attribute in this.attributes) {
+                this.updateAttribute(attribute);
+            }
+        },
+        updateAttribute(attribute) {            
+            attribute.baseValue = this.computeAttributeBaseValue(attribute);
+            attribute.savingThrow = this.computeAttributeSavingThrow(attribute);
             this.compute();
         },
-        getComputedAttribute(attribute) {
-            return Math.floor(this.attributeInputs[attribute] / 10);
+        computeAttributeBaseValue(attribute) {
+            return Math.floor(attribute.inputValue / 10); 
         },
-        computeAllAttributeModifiers() {
-            // No need to update attributes directly, as we are using attributeInputs for raw values
+        computeAttributeSavingThrow(attribute) {
+            if (attribute.istGeuebt) {
+                return attribute.baseValue + this.characterData.Uebungsbonus;
+            }else{
+                return attribute.baseValue;
+            }
         },
+        getAttributeFromName(name) {
+            return this.attributes.find(attr => attr.name === name);
+        },
+        /*BASIC VALUES*/
         computeAllBasicValues() {
             this.computeUebungsbonus();
             this.computeRuestung();
@@ -106,35 +115,37 @@ new Vue({
                     bonusRuestungTemp += Number(item.itemBonus);
                 }
             }
-            this.characterData.Ruestung = 8 + this.characterData.attributes.Konstitution + Math.floor(this.characterData.attributes.Vitalitaet / 2) + bonusRuestungTemp;
+            this.characterData.Ruestung = 8 + this.getAttributeFromName("Konstitution").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2) + bonusRuestungTemp;
         },
         computeGeschwindigkeit() {
-            this.characterData.Initiative = 8 + this.characterData.attributes.Geschick + Math.floor(this.characterData.attributes.Vitalitaet / 2);
+            this.characterData.Initiative = 8 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2);
         },
         computeBewegungsrate() {
-            this.characterData.Bewegung = 8;
+            this.characterData.Bewegung = 8 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2);
         },
         computeLeben() {
-            this.characterData.Leben = (4 + this.characterData.attributes.Konstitution + Math.floor(this.characterData.attributes.Vitalitaet / 2)) * this.characterData.level;
+            this.characterData.Leben = (4 + this.getAttributeFromName("Konstitution").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2)) * this.characterData.level;
         },
         computeMana() {
-            this.characterData.Mana = (4 + this.characterData.attributes.Intelligenz + Math.floor(this.characterData.attributes.Vitalitaet / 2)) * this.characterData.level;
+            this.characterData.Mana = (4 + this.getAttributeFromName("Intelligenz").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2)) * this.characterData.level;
         },
         computeAusdauer() {
-            this.characterData.Ausdauer = (4 + this.characterData.attributes.Geschick + Math.floor(this.characterData.attributes.Vitalitaet / 2)) * this.characterData.level;
+            this.characterData.Ausdauer = (4 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2)) * this.characterData.level;
         },
+        /*ABILITLIES*/
         computeAllAbilityModifiers() {
             this.abilities.forEach(ability => {
                 this.computeAbilityModifiers(ability);
             });
         },
         computeAbilityModifiers(ability) {
-            let attributeVal = this.characterData.attributes[ability.baseAttribute];
+            let attributeVal = this.getAttributeFromName(ability.baseAttribute).baseValue;
             if (ability.checked) {
                 attributeVal += this.characterData.Uebungsbonus;
             }
             ability.value = attributeVal;
         },
+        /*ATTACKS*/
         computeAllAttacks() {
             this.attacks.forEach(attack => {
                 this.computeAttack(attack);
@@ -143,9 +154,9 @@ new Vue({
         computeAttack(attack) {
             let attribute = attack.attribute;
             let itemBonus = parseInt(attack.itemBonus);
-            attack.hit = this.characterData.Uebungsbonus + itemBonus + this.characterData.attributes[attribute];
-            attack.damage = this.characterData.Uebungsbonus + itemBonus + this.characterData.attributes[attribute];
-        },
+            attack.hit = this.characterData.Uebungsbonus + itemBonus + this.getAttributeFromName(attribute).baseValue;
+            attack.damage = this.characterData.Uebungsbonus + itemBonus + this.getAttributeFromName(attribute).baseValue;
+        },        
         getAbilityModifier(name, baseAttribute) {
             const ability = this.abilities.find(ability => ability.name === name);
             return ability ? ability.value : 0;
@@ -164,6 +175,7 @@ new Vue({
         removeAttack(attackId) {
             this.attacks = this.attacks.filter(attack => attack.id !== attackId);
         },
+        /*ITEMS*/
         addItem() {
             this.numberOfItems = this.numberOfItems + 1;
             newId = this.numberOfItems;
