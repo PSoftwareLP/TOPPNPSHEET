@@ -15,8 +15,9 @@
             <button @click="currentPage = 'frontPage'">Front Page</button>
             <button @click="currentPage = 'playPage'">Play Page</button>
             <button @click="currentPage = 'firstInputPage'">First Input Page</button>
-            <button @click="currentPage = 'secondInputPage'">ItemShop</button>
+            <button @click="currentPage = 'itemsPage'">Laden: Gegenstaende kaufen und ausruesten</button>
             <button @click="currentPage = 'thirdInputPage'">WeaponShop</button>
+            <button @click="currentPage = 'itemsShopPage'">Schmiede: Gegenstaende herstellen</button>
         </nav>
 
         <!-- Play Page -->
@@ -369,30 +370,6 @@
             </div>
         </div>
 
-        <!-- Second Input Page -->
-        <div v-if="currentPage === 'secondInputPage'" class="character-sheet">
-            <div class="box">
-                <div class="row">
-                    <div class="box">
-                        <label for="characterName">Character Name:</label>
-                        <input type="text" v-model="characterName">
-                    </div>
-                    <div class="box">
-                        <label for="level">Character Level: </label>
-                        <output class="output">{{ characterData.level }}</output>
-                    </div>
-                </div>
-            </div>
-            <div class="box" v-for="item in items" :key="item.id">
-                <div class="row">
-                    <input type="text" v-model="item.name">
-                    <input class="input" type="number" v-model="item.itemBonus" @change="compute">
-                    <button @click="removeItem(item.id)">Remove</button>
-                </div>
-            </div>
-            <button @click="addItem">Add New Item</button>
-        </div>
-
         <!-- Third Input Page -->
         <div v-if="currentPage === 'thirdInputPage'" class="character-sheet">
             <div class="box">
@@ -447,8 +424,64 @@
             </div>
             <button @click="addAttack">Add New Attack</button>
         </div>
-        <script src="Logic.js"></script>
-        <script src="app.js"></script>
+
+        <!-- items Input Page -->
+        <div v-if="currentPage === 'itemsPage'" class="character-sheet">
+            <div class="box">
+                <div class="row">
+                    <div class="box">
+                        <label for="characterName">Character Name:</label>
+                        <input type="text" v-model="characterName">
+                    </div>
+                    <div class="box">
+                        <label for="level">Character Level: </label>
+                        <output class="output">{{ characterData.level }}</output>
+                    </div>
+                </div>
+            </div>
+            <div class="box" v-for="item in items" :key="item.id">
+                <div class="row">
+                    <output class="output">{{ item.name }}</output>
+                    <output class="output">{{ item.itemBonus }}</output>
+                    <button @click="removeItem(item.id)"> Verkaufen </button>
+                </div>
+            </div>
+            <div class="box">
+                <label for="shopItems">Etwas kaufen:</label>
+                <select v-model="selectedShopItemId" @change="addItemFromShop">
+                    <option v-for="shopItem in itemsShop" :value="shopItem.id" :key="shopItem.id">
+                        {{ shopItem.name }} ({{ shopItem.bonusDimension }}, {{ shopItem.itemBonus }})
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- itemShop Input Page -->
+        <div v-if="currentPage === 'itemsShopPage'" class="character-sheet">
+            <div class="box">
+                <div class="row">
+                    <div class="box">
+                        <label for="characterName">Character Name:</label>
+                        <input type="text" v-model="characterName">
+                    </div>
+                    <div class="box">
+                        <label for="level">Character Level: </label>
+                        <output class="output">{{ characterData.level }}</output>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box" v-for="item in itemsShop" :key="item.id">
+                <div class="row">
+                    <input type="text" v-model="item.name">
+                    <input class="input" type="number" v-model="item.itemBonus" @change="compute">
+                    <button @click="removeItemFromShop(item.id)">Remove</button>
+                </div>
+            </div>
+            <button @click="addItemToShop">Add New Item</button>
+        </div>
     </div>
+    <script src="Logic.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -55,15 +55,22 @@ new Vue({
         /*death savingthrows*/
         successes: [false, false, false],
         failures: [false, false, false],
-        numberOfItems: 6,
+        /*item logic*/
+        numberOfItems: 2,
         items: [
             { id: 1, name: "Helm", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 2, name: "Brust", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 3, name: "Schild", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 4, name: "Arme", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 5, name: "Beine", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 6, name: "Schuhe", bonusDimension: "Ruestung", itemBonus: 0 }
-        ]
+            { id: 2, name: "Brust", bonusDimension: "Ruestung", itemBonus: 1000 },
+        ],
+        numberOfItemsInShop: 6,
+        itemsShop: [
+            { id: 1, name: "Helm", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 2, name: "Brust", bonusDimension: "Ruestung", itemBonus: 1 },
+            { id: 3, name: "Schild", bonusDimension: "Ruestung", itemBonus: 2 },
+            { id: 4, name: "Arme", bonusDimension: "Ruestung", itemBonus: 3 },
+            { id: 5, name: "Beine", bonusDimension: "Ruestung", itemBonus: 4 },
+            { id: 6, name: "Schuhe", bonusDimension: "Ruestung", itemBonus: 5 }
+        ],
+        selectedShopItemId: null
     },
     methods: {
         async fetchData(file, key) {
@@ -190,15 +197,33 @@ new Vue({
             this.attacks = this.attacks.filter(attack => attack.id !== attackId);
         },
         /*ITEMS*/
-        addItem() {
+
+        addItemFromShop() {
             this.numberOfItems = this.numberOfItems + 1;
-            newId = this.numberOfItems;
-            this.items.push({ id: newId, name: `Item ${newId}`, bonusDimension: "Staerke", itemBonus: 0, count: 0 });
+            const shopItem = this.itemsShop.find(item => item.id === this.selectedShopItemId);
+            if (shopItem) {
+                const newItem = { ...shopItem };
+                this.items.push(newItem);
+            }
+            this.selectedShopItemId = null; // Reset the dropdown selection
+            this.compute()
         },
         removeItem(itemId) {
+            this.numberOfItems = this.numberOfItems - 1;
             this.items = this.items.filter(items => items.id !== itemId);
+            this.compute()
+        },
+        /*ITEM SHOP*/
+        
+        addItemToShop() {
+            this.numberOfItemsInShop = this.numberOfItemsInShop + 1;
+            newId = this.numberOfItemsInShop;
+            this.itemsShop.push({ id: newId, name: `Item ${newId}`, bonusDimension: "Staerke", itemBonus: 0, count: 0 });
+        },
+        removeItemFromShop(itemId) {
+            this.numberOfItemsInShop = this.numberOfItemsInShop - 1;
+            this.itemsShop = this.itemsShop.filter(items => items.id !== itemId);
         }
-
     },
     mounted() {
         this.compute();
