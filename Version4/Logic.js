@@ -20,13 +20,13 @@ new Vue({
             Ausdauer: 5
         },
         attributes: [
-            { name: "Staerke", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
-            { name: "Geschick", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
-            { name: "Konstitution", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
-            { name: "Willskraft", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
-            { name: "Charisma", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
-            { name: "Intelligenz", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 },
-            { name: "Vitalitaet", inputValue: 0, istGeuebt: false, baseValue: 1, savingThrow: 1 }
+            { name: "Staerke", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 },
+            { name: "Geschick", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 },
+            { name: "Konstitution", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 },
+            { name: "Willskraft", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 },
+            { name: "Charisma", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 },
+            { name: "Intelligenz", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 },
+            { name: "Vitalitaet", inputValue: 0, istGeuebt: false, baseValue: 0, savingThrow: 0 }
         ],
         abilities: [
             { name: "Akrobatik", baseAttribute: "Staerke", checked: false },
@@ -58,17 +58,19 @@ new Vue({
         /*item logic*/
         numberOfItems: 2,
         items: [
-            { id: 1, name: "Helm", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 2, name: "Brust", bonusDimension: "Ruestung", itemBonus: 1000 },
+            { id: 1, name: "Eleganter Umhang", bonusDimension: "Ruestung", itemBonus: 0 },
         ],
         numberOfItemsInShop: 6,
         itemsShop: [
-            { id: 1, name: "Helm", bonusDimension: "Ruestung", itemBonus: 0 },
-            { id: 2, name: "Brust", bonusDimension: "Ruestung", itemBonus: 1 },
-            { id: 3, name: "Schild", bonusDimension: "Ruestung", itemBonus: 2 },
-            { id: 4, name: "Arme", bonusDimension: "Ruestung", itemBonus: 3 },
-            { id: 5, name: "Beine", bonusDimension: "Ruestung", itemBonus: 4 },
-            { id: 6, name: "Schuhe", bonusDimension: "Ruestung", itemBonus: 5 }
+            { id: 1, name: "Normale Kleidung", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 2, name: "Stoffruestung", bonusDimension: "Ruestung", itemBonus: 1 },
+            { id: 3, name: "Lederruestung", bonusDimension: "Ruestung", itemBonus: 2 },
+            { id: 4, name: "Kettenhemd", bonusDimension: "Ruestung", itemBonus: 3 },
+            { id: 5, name: "Plattenrüstung", bonusDimension: "Ruestung", itemBonus: 4 },            
+        ],
+        itemDimensions: [
+            { name: "Ruestung" },
+            { name: "Bewegung" }
         ],
         selectedShopItemId: null
     },
@@ -111,6 +113,20 @@ new Vue({
         },
         getAttributeFromName(name) {
             return this.attributes.find(attr => attr.name === name);
+        },
+        getRemainingAttributePoints() {
+            let usedPoints = 0;
+            for (let key in this.attributes) {
+                let attribute = this.attributes[key];
+                // Ensure that attribute.inputValue is a number
+                let inputValue = parseFloat(attribute.inputValue) || 0;
+                usedPoints += inputValue;
+            }
+            usedPoints = this.computeMaximumPoints() - usedPoints;
+            return usedPoints;
+        },
+        computeMaximumPoints() {
+            return 130 + this.characterData.level * 3;
         },
         /*BASIC VALUES*/
         computeAllBasicValues() {
