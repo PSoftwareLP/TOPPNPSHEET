@@ -49,8 +49,8 @@ new Vue({
         ],
         numberOfAttacks: 2,
         attacks: [
-            { id: 1, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0 },
-            { id: 2, name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0 }
+            { id: 1, name: "attack1", attribute: "Staerke", dice: "d6", itemBonus: 0, Uebungsbonus: true },
+            { id: 2, name: "attack2", attribute: "Staerke", dice: "d6", itemBonus: 0, Uebungsbonus: true }
         ],
         /*death savingthrows*/
         successes: [false, false, false],
@@ -58,7 +58,8 @@ new Vue({
         /*item logic*/
         numberOfItems: 2,
         items: [
-            { id: 1, name: "Eleganter Umhang", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 1, name: "Normale Kleidung", bonusDimension: "Ruestung", itemBonus: 0 },
+            { id: 2, name: "Barfuss", bonusDimension: "Bewegung", itemBonus: -1 },
         ],
         numberOfItemsInShop: 6,
         itemsShop: [
@@ -66,7 +67,9 @@ new Vue({
             { id: 2, name: "Stoffruestung", bonusDimension: "Ruestung", itemBonus: 1 },
             { id: 3, name: "Lederruestung", bonusDimension: "Ruestung", itemBonus: 2 },
             { id: 4, name: "Kettenhemd", bonusDimension: "Ruestung", itemBonus: 3 },
-            { id: 5, name: "Plattenrüstung", bonusDimension: "Ruestung", itemBonus: 4 },            
+            { id: 5, name: "Plattenruestung", bonusDimension: "Ruestung", itemBonus: 4 },            
+            { id: 6, name: "Barfuss", bonusDimension: "Bewegung", itemBonus: -1 },
+            { id: 8, name: "LederSchuhe", bonusDimension: "Bewegung", itemBonus: 1 },
         ],
         itemDimensions: [
             { name: "Ruestung" },
@@ -158,16 +161,22 @@ new Vue({
             this.characterData.Initiative = 8 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2);
         },
         computeBewegungsrate() {
-            this.characterData.Bewegung = 8 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2);
+            let bonusBewegungTemp = 0;
+            for (let item of this.items) {
+                if (item.bonusDimension === "Bewegung") {
+                    bonusBewegungTemp += Number(item.itemBonus);
+                }
+            }
+            this.characterData.Bewegung = 8 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2) + bonusBewegungTemp;
         },
         computeLeben() {
-            this.characterData.Leben = (4 + this.getAttributeFromName("Konstitution").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2)) * this.characterData.level;
+            this.characterData.Leben = (4 + this.getAttributeFromName("Konstitution").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 3)) * this.characterData.level;
         },
         computeMana() {
-            this.characterData.Mana = (4 + this.getAttributeFromName("Intelligenz").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2)) * this.characterData.level;
+            this.characterData.Mana = (4 + this.getAttributeFromName("Willskraft").baseValue + Math.floor(this.getAttributeFromName("Intelligenz").baseValue / 2));
         },
         computeAusdauer() {
-            this.characterData.Ausdauer = (4 + this.getAttributeFromName("Geschick").baseValue + Math.floor(this.getAttributeFromName("Vitalitaet").baseValue / 2)) * this.characterData.level;
+            this.characterData.Ausdauer = (10 + this.getAttributeFromName("Konstitution").inputValue * 3 + this.getAttributeFromName("Konstitution").baseValue * 4);
         },
         /*ABILITLIES*/
         computeAllAbilityModifiers() {
@@ -191,18 +200,21 @@ new Vue({
         computeAttack(attack) {
             let attribute = attack.attribute;
             let itemBonus = parseInt(attack.itemBonus);
-            attack.hit = this.characterData.Uebungsbonus + itemBonus + this.getAttributeFromName(attribute).baseValue;
-            attack.damage = this.characterData.Uebungsbonus + itemBonus + this.getAttributeFromName(attribute).baseValue;
+            if (attack.Uebungsbonus == true) {
+                itemBonus = itemBonus + this.characterData.Uebungsbonus;
+            }
+            attack.hit = this.getAttributeFromName(attribute).baseValue + itemBonus;
+            attack.damage = this.getAttributeFromName(attribute).baseValue + itemBonus;
         },
         getAbilityModifier(name, baseAttribute) {
             const ability = this.abilities.find(ability => ability.name === name);
             return ability ? ability.value : 0;
         },
         getAttackHit(attack) {
-            return `${attack.hit} + d20`;
+            return `d20 + ${attack.hit}`;
         },
         getAttackDamage(attack) {
-            return `${attack.damage} + ${attack.dice}`;
+            return `${attack.dice} + ${attack.damage}`;
         },
         addAttack() {
             this.numberOfAttacks = this.numberOfAttacks + 1;

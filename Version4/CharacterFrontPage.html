@@ -370,7 +370,7 @@
                         <output class="output">{{ characterData.level }}</output>
                     </div>
                     <div class="box">
-                        <label for="level">Fähigkeiten eingeben: </label>
+                        <label for="level">Faehigkeiten eingeben: </label>
                     </div>
                 </div>
             </div>
@@ -395,6 +395,10 @@
                             <div class="column">
                                 <label>Ausdauer:</label>
                                 <input class="input" type="number" @change="compute">
+                            </div>
+                            <div>
+                                <label>Uebung:</label>
+                                <input type="checkbox" v-model="attack.Uebungsbonus" @change="compute">
                             </div>
                         </div>
                     </div>
