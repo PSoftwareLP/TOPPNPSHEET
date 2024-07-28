@@ -97,14 +97,14 @@ new Vue({
 
 
         compute() {
-            this.computeAllAttributes();
+            //this.computeAllAttributes();
+            this.computeDerived();
+        },
+        computeDerived() {
             this.computeAllBasicValues();
             this.computeAllAbilityModifiers();
             this.computeAllAttacks();
         },
-
-
-
         /* HERO CLASS */
         filteredHeroClasses() {
             return this.heroClasses.filter(heroClass => heroClass.minimumlevel <= this.characterData.level);
@@ -121,6 +121,7 @@ new Vue({
         updateAttribute(attribute) {
             attribute.baseValue = this.computeAttributeBaseValue(attribute);
             attribute.savingThrow = this.computeAttributeSavingThrow(attribute);
+            this.computeDerived();
         },
         computeAttributeBaseValue(attribute) {
             if (attribute.inputValue < 0) {
