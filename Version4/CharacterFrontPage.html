@@ -261,7 +261,12 @@
                             </div>
                             <div class="box">
                                 <label for="level">Character Level: </label>
-                                <output class="output">{{ characterData.level }}</output>
+                                <div class="row">
+                                    <output class="output">{{ characterData.level }}</output>
+                                <select v-model="gewaehlteklasse">
+                                    <option v-for="heroClass in heroClasses" :value="gewaehlteklasse"> {{ heroClass.name }} </option>
+                                </select>
+                                    </div>
                             </div>
                             <div class="box">
                                 <label for="level">Inspiration: </label>
@@ -408,7 +413,7 @@
                     </div>
                     <div class="column">
                         <label>DMG:</label>
-                        <output class="output">{{ getAttackDamage(attack) }}</outputclass="output">
+                        <output class="output">{{ getAttackDamage(attack) }}</output>
                     </div>
                     <button @click="removeAttack(attack.id)">Remove</button>
                 </div>
